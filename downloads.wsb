@@ -20,6 +20,7 @@
   </MappedFolders>
   <LogonCommand>
     <Command><![CDATA[
- powershell -NoProfile -ExecutionPolicy Bypass -Command "try { $log='C:\\startupscripts\\startup_run.log'; (Get-Date).ToString() | Out-File -FilePath $log -Encoding utf8; 'PWD: ' + (Get-Location).Path | Out-File -FilePath $log -Append; if (Test-Path 'C:\\startupscripts\\bootstrap.ps1') { 'Found bootstrap.ps1' | Out-File -FilePath $log -Append; & 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath $log -Append } else { 'bootstrap.ps1 not found in C:\\startupscripts' | Out-File -FilePath $log -Append }; 'DIAG_DONE' | Out-File -FilePath $log -Append } catch { $_.Exception.ToString() | Out-File -FilePath $log -Append }"
- ]]></Command>
-  </LogonCommand></Configuration>
+ powershell -NoProfile -ExecutionPolicy Bypass -Command "& 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\\startupscripts\\startup_run.log' -Append"
+  ]]></Command>
+   </LogonCommand>
+</Configuration>
