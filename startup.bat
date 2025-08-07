@@ -14,15 +14,18 @@ echo ================================================================= >> "%LOG_
 echo. >> "%LOG_FILE%"
 
 
-:: --- Run the PowerShell script and redirect all output ---
-echo The script is running. Please see the log file for detailed progress:
-echo %LOG_FILE%
-echo.
+:: --- Run the GUI selection for apps to install (if available) ---
+echo Launching program selection dialog... >> "%LOG_FILE%"
+powershell.exe -ExecutionPolicy Bypass -File "C:\startupscripts\select_apps.ps1" >> "%LOG_FILE%" 2>&1
 
-:: This command runs the PowerShell script. 
-:: '>>' appends the standard output to the log file.
-:: '2>&1' redirects the standard error to the same place as the standard output (the log file).
-powershell.exe -ExecutionPolicy Bypass -File "C:\startupscripts\install_apps.ps1" >> "%LOG_FILE%" 2>&1
+:: If apps_selected.json exists, install those; otherwise fall back to default apps.json
+if exist "C:\startupscripts\apps_selected.json" (
+    echo Using selected apps from apps_selected.json >> "%LOG_FILE%"
+    powershell.exe -ExecutionPolicy Bypass -File "C:\startupscripts\install_apps.ps1" -AppsJsonPath "C:\startupscripts\apps_selected.json" >> "%LOG_FILE%" 2>&1
+) else (
+    echo No selection made or selection file not found. Falling back to default apps.json >> "%LOG_FILE%"
+    powershell.exe -ExecutionPolicy Bypass -File "C:\startupscripts\install_apps.ps1" -AppsJsonPath "C:\startupscripts\apps.json" >> "%LOG_FILE%" 2>&1
+)
 
 
 :: --- Final Message ---
