@@ -19,6 +19,6 @@
     </MappedFolder>
   </MappedFolders>
   <LogonCommand>
-    <Command>"powershell -ExecutionPolicy Bypass -NoProfile -File C:\startupscripts\bootstrap.ps1"</Command>
+    <Command>"powershell -ExecutionPolicy Bypass -NoProfile -Command \"if(!(Test-Path 'C:\\startupscripts')) {New-Item -ItemType Directory -Path 'C:\\startupscripts' -Force | Out-Null}; if(!(Test-Path 'C:\\startupscripts\\bootstrap.ps1')) {try {Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cods4/windows_sandbox/main/bootstrap.ps1' -OutFile 'C:\\startupscripts\\bootstrap.ps1' -UseBasicParsing} catch {Write-Output '[ERROR] bootstrap.ps1 download failed'; exit 1}}; & 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\\startupscripts\\startup_run.log'\""</Command>
   </LogonCommand>
 </Configuration>
