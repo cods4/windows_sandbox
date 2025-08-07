@@ -20,7 +20,7 @@
   </MappedFolders>
   <LogonCommand>
     <Command><![CDATA[
-powershell -NoProfile -ExecutionPolicy Bypass -Command "New-Item -ItemType Directory -Path 'C:\\startupscripts' -Force; 'sandbox-started' | Out-File -FilePath 'C:\\startupscripts\\startup_run.log' -Encoding utf8"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "if(!(Test-Path 'C:\\startupscripts')) { New-Item -ItemType Directory -Path 'C:\\startupscripts' -Force | Out-Null }; try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cods4/windows_sandbox/main/bootstrap.ps1' -OutFile 'C:\\startupscripts\\bootstrap.ps1' -UseBasicParsing -ErrorAction Stop } catch { 'BOOTSTRAP_DOWNLOAD_FAILED' | Out-File -FilePath 'C:\\startupscripts\\startup_run.log' -Append; exit 1 }; & 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\\startupscripts\\startup_run.log' -Append"
 ]]></Command>
   </LogonCommand>
 </Configuration>
