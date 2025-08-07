@@ -1,28 +1,26 @@
-<file>
-  <Configuration>
-    <VGpu>Enable</VGpu>
-    <Networking>Enable</Networking>
-    <AudioInput>Enable</AudioInput>
-    <ProtectedClient>Disable</ProtectedClient>
-    <PrinterRedirection>Enabled</PrinterRedirection>
-    <ClipboardRedirection>Enabled</ClipboardRedirection>
-    <MemoryInMB>8192</MemoryInMB>
-    <MappedFolders>
-      <MappedFolder>
-        <HostFolder>C:\Users\CodlinM\Downloads</HostFolder>
-        <SandboxFolder>C:\temp</SandboxFolder>
-        <ReadOnly>false</ReadOnly>
-      </MappedFolder>
-      <MappedFolder>
-        <HostFolder>C:\Users\CodlinM\Sandbox\startupscripts</HostFolder>
-        <SandboxFolder>C:\startupscripts</SandboxFolder>
-        <ReadOnly>false</ReadOnly>
-      </MappedFolder>
-    </MappedFolders>
-    <LogonCommand>
-      <Command><![CDATA[
-powershell -ExecutionPolicy Bypass -NoProfile -Command "if(!(Test-Path 'C:\\startupscripts')) {New-Item -ItemType Directory -Path 'C:\\startupscripts' -Force | Out-Null}; if(!(Test-Path 'C:\\startupscripts\\bootstrap.ps1')) {try {Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cods4/windows_sandbox/main/bootstrap.ps1' -OutFile 'C:\\startupscripts\\bootstrap.ps1' -UseBasicParsing} catch {Write-Output '[ERROR] bootstrap.ps1 download failed'; exit 1}}; & 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\\startupscripts\\startup_run.log'
+<Configuration>
+  <VGpu>Enable</VGpu>
+  <Networking>Enable</Networking>
+  <AudioInput>Enable</AudioInput>
+  <ProtectedClient>Disable</ProtectedClient>
+  <PrinterRedirection>Enabled</PrinterRedirection>
+  <ClipboardRedirection>Enabled</ClipboardRedirection>
+  <MemoryInMB>8192</MemoryInMB>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\Users\CodlinM\Downloads</HostFolder>
+      <SandboxFolder>C:\temp</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\CodlinM\Sandbox\startupscripts</HostFolder>
+      <SandboxFolder>C:\startupscripts</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command><![CDATA[
+powershell -ExecutionPolicy Bypass -NoProfile -Command "if(!(Test-Path 'C:\startupscripts')) {New-Item -ItemType Directory -Path 'C:\startupscripts' -Force | Out-Null}; if(!(Test-Path 'C:\startupscripts\bootstrap.ps1')) {try {Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cods4/windows_sandbox/main/bootstrap.ps1' -OutFile 'C:\startupscripts\bootstrap.ps1' -UseBasicParsing} catch {Write-Output '[ERROR] bootstrap.ps1 download failed'; exit 1}}; & 'C:\startupscripts\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\startupscripts\startup_run.log'
 ]]></Command>
-    </LogonCommand>
-  </Configuration>
-</file>
+  </LogonCommand>
+</Configuration>
