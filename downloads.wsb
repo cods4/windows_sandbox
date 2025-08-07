@@ -20,7 +20,6 @@
   </MappedFolders>
   <LogonCommand>
     <Command><![CDATA[
- powershell -NoProfile -ExecutionPolicy Bypass -Command "try { $log='C:\\startupscripts\\startup_run.log'; (Get-Date).ToString() | Out-File -FilePath $log -Encoding utf8; 'PWD: ' + (Get-Location).Path | Out-File -FilePath $log -Append; 'Files in C:\\startupscripts:' | Out-File -FilePath $log -Append; if(Test-Path 'C:\\startupscripts') { Get-ChildItem -Path 'C:\\startupscripts' -Force | ForEach-Object { $_.Name } | Out-File -FilePath $log -Append } else { 'C:\\startupscripts does not exist' | Out-File -FilePath $log -Append }; 'DIAG_DONE' | Out-File -FilePath $log -Append } catch { $_.Exception.ToString() | Out-File -FilePath $log -Append }"
-]]></Command>
-  </LogonCommand>
-</Configuration>
+ powershell -NoProfile -ExecutionPolicy Bypass -Command "try { $log='C:\\startupscripts\\startup_run.log'; (Get-Date).ToString() | Out-File -FilePath $log -Encoding utf8; 'PWD: ' + (Get-Location).Path | Out-File -FilePath $log -Append; if (Test-Path 'C:\\startupscripts\\bootstrap.ps1') { 'Found bootstrap.ps1' | Out-File -FilePath $log -Append; & 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath $log -Append } else { 'bootstrap.ps1 not found in C:\\startupscripts' | Out-File -FilePath $log -Append }; 'DIAG_DONE' | Out-File -FilePath $log -Append } catch { $_.Exception.ToString() | Out-File -FilePath $log -Append }"
+ ]]></Command>
+  </LogonCommand></Configuration>
