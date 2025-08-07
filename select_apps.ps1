@@ -1,4 +1,4 @@
-<#!
+<#
 .SYNOPSIS
     A PowerShell-based GUI that lets you select which applications from apps.json to install
     in Windows Sandbox. The selected subset is written to apps_selected.json.
@@ -100,7 +100,18 @@ $okBtn.Add_Click({
     $newJson['Sources'] += $srcObj
     $newJson['WinGetVersion'] = $winGetVersion
 
-    $outPath = 'C:\startupscripts\apps_selected.json'
+    $outDir = 'C:\startupscripts'
+    if (-Not (Test-Path -Path $outDir)) {
+        try {
+            New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+        } catch {
+            [System.Windows.Forms.MessageBox]::Show("Cannot create $outDir to write apps_selected.json. Exiting.", 'Error',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error)
+            $form.Close()
+            exit 1
+        }
+    }
+
+    $outPath = Join-Path $outDir 'apps_selected.json'
     $newJson | ConvertTo-Json -Depth 99 | Out-File -FilePath $outPath -Encoding UTF8
 
     Write-Host "Selected apps written to $outPath"
@@ -117,3 +128,4 @@ $form.Controls.Add($cancelBtn)
 $form.Add_Shown({ $form.Activate() })
 $form.ShowDialog() | Out-Null
 
+</file>

@@ -2,6 +2,14 @@
 
 This document defines how the Opencode automation agents should operate, how progress is tracked across sessions, and how to resume work after interruptions. It also provides a minimal state model and example workflows to ensure continuity when starting fresh or picking up where you left off.
 
+## Note on GitHub-sourced startup script
+- The host startup.bat now fetches select_apps.ps1, install_apps.ps1, and apps.json from a public GitHub repository before running. This keeps scripts up-to-date but means the host must rely on the remote repo for the exact versions used during execution.
+- Do not manually modify startup.bat on the host. If updates are needed, make changes in the GitHub repository and re-run or re-pull on the host to apply.
+
+## Repo URL
+- Public repo: https://github.com/cods4/windows_sandbox
+- Raw files are pulled from https://raw.githubusercontent.com/cods4/windows_sandbox/main/
+
 ## Goals
 - Allow Opencode to be started fresh and #pick up where it left off by persisting a lightweight state.
 - Provide a deterministic, observable workflow for multi-step tasks.
@@ -11,7 +19,7 @@ This document defines how the Opencode automation agents should operate, how pro
 - State file path (root of project): .\agents_state.json
 - If a deeper project structure is desired, you can switch to a dedicated directory (eg. .\state\agents_state.json). The examples below assume root-level state for simplicity.
 
-Note: If you already have a memory file (.github/instructions/memory.instruction.md) describing the intended goals, you can reference it to seed initial steps.
+Note: If you already have a memory file (.github/instructions/memory.instruction.md), use that as guidance to seed initial steps when there is no existing state.
 
 ## State schema (JSON)
 A minimal, future-proof model. This is designed to be simple to read/write and upgrade in place.

@@ -68,13 +68,13 @@ if ($LASTEXITCODE -ne 0) {
         exit 1
     }
     winget --version | Out-Null
-+    if ($LASTEXITCODE -ne 0) {
-+        Write-Log "[FATAL ERROR] Winget installation verification failed."
-+        exit 1
-+    }
+    if ($LASTEXITCODE -ne 0) {
+        Write-Log "[FATAL ERROR] Winget installation verification failed."
+        exit 1
+    }
 } else {
     Write-Log "[INFO] Winget is already installed."
-+}
+}
 
 # =============================================================================
 # --- 2. BEGIN APPLICATION INSTALLATIONS VIA IMPORT ---
