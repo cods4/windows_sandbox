@@ -1,0 +1,24 @@
+<Configuration>
+  <VGpu>Enable</VGpu>
+  <Networking>Enable</Networking>
+  <AudioInput>Enable</AudioInput>
+  <ProtectedClient>Disable</ProtectedClient>
+  <PrinterRedirection>Enabled</PrinterRedirection>
+  <ClipboardRedirection>Enabled</ClipboardRedirection>
+  <MemoryInMB>8192</MemoryInMB>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\Users\CodlinM\Downloads</HostFolder>
+      <SandboxFolder>C:\temp</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\CodlinM\Sandbox\startupscripts</HostFolder>
+      <SandboxFolder>C:\startupscripts</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>"startup.bat"</Command>
+  </LogonCommand>
+</Configuration>
