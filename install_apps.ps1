@@ -52,23 +52,33 @@ $packages = $appsJson.Sources[0].Packages
 # --- 1. WINGET INSTALLER (FOR SANDBOX) ---
 # =============================================================================
 Write-Log "Checking for winget..."
-winget --version | Out-Null
-if ($LASTEXITCODE -ne 0) {
+try {
+    winget --version > $null 2>&1
+    $wingetPresent = $true
+} catch {
+    $wingetPresent = $false
+}
+if (-not $wingetPresent) {
     Write-Log "[INFO] Winget not found. Attempting to install/repair..."
+    # Follow the exact installation sequence requested
     $progressPreference = 'silentlyContinue'
     Write-Host "Installing WinGet PowerShell module from PSGallery..."
     try {
         Install-PackageProvider -Name NuGet -Force | Out-Null
         Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
-        Import-Module -Name Microsoft.WinGet.Client
+        Write-Host "Using Repair-WinGetPackageManager cmdlet to bootstrap WinGet..."
+        Import-Module -Name Microsoft.WinGet.Client -ErrorAction SilentlyContinue
         Repair-WinGetPackageManager -AllUsers
+        Write-Host "Done."
         Write-Log "[SUCCESS] Winget installed/bootstrapped."
     } catch {
-        Write-Log "[FATAL ERROR] Winget installation failed. Cannot proceed."
+        Write-Log "[FATAL ERROR] Winget installation failed. Cannot proceed. Exception: $($_.Exception.Message)"
         exit 1
     }
-    winget --version | Out-Null
-    if ($LASTEXITCODE -ne 0) {
+    try {
+        winget --version > $null 2>&1
+        Write-Log "[SUCCESS] Winget appears available after bootstrap."
+    } catch {
         Write-Log "[FATAL ERROR] Winget installation verification failed."
         exit 1
     }

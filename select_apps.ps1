@@ -5,13 +5,16 @@
 
 #>
 
+param(
+    [string]$AppsJsonPath = 'C:\\startupscripts\\apps.json'
+)
+
 # Load the current apps.json to build the UI options
-$appsJsonPath = 'C:\startupscripts\apps.json'
-if (-Not (Test-Path -Path $appsJsonPath)) {
-    Write-Error "Cannot locate $appsJsonPath"
+if (-Not (Test-Path -Path $AppsJsonPath)) {
+    Write-Error "Cannot locate $AppsJsonPath"
     exit 1
 }
-$appsJson = Get-Content -Path $appsJsonPath -Raw | ConvertFrom-Json
+$appsJson = Get-Content -Path $AppsJsonPath -Raw | ConvertFrom-Json
 $packages = $appsJson.Sources[0].Packages
 $schema = if ($appsJson.'$schema') { $appsJson.'$schema' } else { '' }
 $winGetVersion = $appsJson.WinGetVersion
@@ -100,7 +103,8 @@ $okBtn.Add_Click({
     $newJson['Sources'] += $srcObj
     $newJson['WinGetVersion'] = $winGetVersion
 
-    $outDir = 'C:\startupscripts'
+    # Write apps_selected.json next to the apps.json file that was provided
+    $outDir = Split-Path -Parent $AppsJsonPath
     if (-Not (Test-Path -Path $outDir)) {
         try {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
