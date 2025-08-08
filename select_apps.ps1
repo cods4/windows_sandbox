@@ -61,16 +61,20 @@ foreach ($item in $uiItems) {
 }
 $form.Controls.Add($checkedList)
 
-# Buttons
-$okBtn = New-Object System.Windows.Forms.Button
-$okBtn.Text = 'OK'
-$okBtn.Location = New-Object System.Drawing.Point(200, 380)
-$okBtn.Add_Click({
-    if ($checkedList.CheckedItems.Count -eq 0) {
-        [System.Windows.Forms.MessageBox]::Show('No applications selected. Exiting.','Info',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Information)
-        $form.Close()
-        exit 1
+# Helper function to process current selection and write apps_selected.json
+function Process-Selection {
+    param(
+        [bool]$AutoSelectAll = $false
+    )
+
+    if ($AutoSelectAll) {
+        # Select all items in the list
+        for ($i = 0; $i -lt $checkedList.Items.Count; $i++) {
+            $checkedList.SetItemChecked($i, $true)
+        }
+        [System.Windows.Forms.MessageBox]::Show('No selection made within the timeout. Selecting all applications and proceeding.','Info',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Information) | Out-Null
     }
+
     # Build the list of selected IDs in the same order as displayed
     $selectedIds = @()
     for ($i = 0; $i -lt $checkedList.CheckedItems.Count; $i++) {
@@ -87,7 +91,8 @@ $okBtn.Add_Click({
     }
 
     if ($selectedPackages.Count -eq 0) {
-        [System.Windows.Forms.MessageBox]::Show('No valid packages selected.','Info',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Information)
+        # No selection even after auto-selection - treat as cancel
+        [System.Windows.Forms.MessageBox]::Show('No valid packages selected. Exiting.','Info',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Information) | Out-Null
         $form.Close()
         exit 1
     }
@@ -109,27 +114,54 @@ $okBtn.Add_Click({
         try {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
         } catch {
-            [System.Windows.Forms.MessageBox]::Show("Cannot create $outDir to write apps_selected.json. Exiting.", 'Error',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error)
+            [System.Windows.Forms.MessageBox]::Show("Cannot create $outDir to write apps_selected.json. Exiting.", 'Error',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
             $form.Close()
             exit 1
         }
     }
 
     $outPath = Join-Path $outDir 'apps_selected.json'
-    $newJson | ConvertTo-Json -Depth 99 | Out-File -FilePath $outPath -Encoding UTF8
+    try {
+        $newJson | ConvertTo-Json -Depth 99 | Out-File -FilePath $outPath -Encoding UTF8
+        Write-Host "Selected apps written to $outPath"
+    } catch {
+        [System.Windows.Forms.MessageBox]::Show("Failed to write $outPath: $($_.Exception.Message)", 'Error',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
+        $form.Close()
+        exit 1
+    }
 
-    Write-Host "Selected apps written to $outPath"
+    # Stop timer if running and close form
+    if ($timer) {
+        try { $timer.Stop() } catch { }
+    }
+
     $form.Close()
-})
+}
+
+# Buttons
+$okBtn = New-Object System.Windows.Forms.Button
+$okBtn.Text = 'OK'
+$okBtn.Location = New-Object System.Drawing.Point(200, 380)
+$okBtn.Add_Click({ Process-Selection $false })
 $form.Controls.Add($okBtn)
 
 $cancelBtn = New-Object System.Windows.Forms.Button
 $cancelBtn.Text = 'Cancel'
 $cancelBtn.Location = New-Object System.Drawing.Point(320, 380)
-$cancelBtn.Add_Click({ $form.Close(); exit 1 })
+$cancelBtn.Add_Click({ if ($timer) { try { $timer.Stop() } catch { } } $form.Close(); exit 1 })
 $form.Controls.Add($cancelBtn)
+
+# Setup a 5-minute timer to auto-select all applications if the user does nothing
+$timer = New-Object System.Windows.Forms.Timer
+$timer.Interval = 300000 # 5 minutes in milliseconds
+$timer.Add_Tick({
+    # Ensure the form is still visible and not already closed
+    if ($form -and $form.Visible) {
+        Process-Selection $true
+    }
+})
+$timer.Start()
 
 $form.Add_Shown({ $form.Activate() })
 $form.ShowDialog() | Out-Null
 
-</file>
