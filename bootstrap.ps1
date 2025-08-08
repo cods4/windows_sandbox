@@ -26,8 +26,20 @@ try {
     $url = "$base/$f"
     try {
       Write-Log "Downloading $f from $url to $dst"
-      Invoke-WebRequest -Uri $url -OutFile $dst -UseBasicParsing
+      Invoke-WebRequest -Uri $url -OutFile $dst -UseBasicParsing -ErrorAction Stop
       Write-Log "Downloaded $f"
+      # Quick validation: ensure the downloaded file is not an HTML error page
+      try {
+          $snippet = Get-Content -Path $dst -Raw -ErrorAction Stop
+          if ($snippet -match '<!DOCTYPE html' -or $snippet -match '<html' -or $snippet.TrimStart().StartsWith('<')) {
+              Write-Log "[ERROR] Downloaded $f looks like HTML (likely an error page). Content snippet: $($snippet.Substring(0,[Math]::Min(400,$snippet.Length)))"
+              throw "Downloaded content for $f is HTML, aborting."
+          }
+      } catch {
+          # If we couldn't read or validated as HTML, abort
+          Write-Log "[ERROR] Failed to validate downloaded file $dst: $($_.Exception.Message)"
+          throw
+      }
     } catch {
       Write-Log "[ERROR] Failed to download $f from $url : $($_.Exception.Message)"
       throw

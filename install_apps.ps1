@@ -19,7 +19,7 @@ param(
 )
 
 # --- Force modern TLS for network requests. This is critical for sandbox environments. ---
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Ssl3, Tls, Tls11, Tls12'
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
 function Write-Log {
     param (
@@ -53,33 +53,60 @@ $packages = $appsJson.Sources[0].Packages
 # =============================================================================
 Write-Log "Checking for winget..."
 try {
-    winget --version > $null 2>&1
+    & winget --version > $null 2>&1
     $wingetPresent = $true
 } catch {
     $wingetPresent = $false
 }
 if (-not $wingetPresent) {
     Write-Log "[INFO] Winget not found. Attempting to install/repair..."
-    # Follow the exact installation sequence requested
     $progressPreference = 'silentlyContinue'
     Write-Host "Installing WinGet PowerShell module from PSGallery..."
-    try {
-        Install-PackageProvider -Name NuGet -Force | Out-Null
-        Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
-        Write-Host "Using Repair-WinGetPackageManager cmdlet to bootstrap WinGet..."
-        Import-Module -Name Microsoft.WinGet.Client -ErrorAction SilentlyContinue
-        Repair-WinGetPackageManager -AllUsers
-        Write-Host "Done."
-        Write-Log "[SUCCESS] Winget installed/bootstrapped."
-    } catch {
-        Write-Log "[FATAL ERROR] Winget installation failed. Cannot proceed. Exception: $($_.Exception.Message)"
-        exit 1
+
+    # Helper to log full exception details
+    function Log-Exception($ex) {
+        try { Write-Log "Exception: $([string]($ex | Out-String))" } catch { Write-Host "(failed to log exception)" }
     }
+
+    $installed = $false
     try {
-        winget --version > $null 2>&1
+        Install-PackageProvider -Name NuGet -Force -ErrorAction Stop | Out-Null
+        Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery -ErrorAction Stop -Scope AllUsers | Out-Null
+        Write-Host "Using Repair-WinGetPackageManager cmdlet to bootstrap WinGet..."
+        Import-Module -Name Microsoft.WinGet.Client -ErrorAction Stop
+        Repair-WinGetPackageManager -AllUsers -ErrorAction Stop
+        Write-Host "Done."
+        Write-Log "[SUCCESS] Winget installed/bootstrapped (AllUsers)."
+        $installed = $true
+    } catch {
+        Write-Log "[WARN] Initial winget bootstrap (AllUsers) failed. Will try CurrentUser scope. Error: $($_.Exception.Message)"
+        Log-Exception $_
+    }
+
+    if (-not $installed) {
+        try {
+            Write-Host "Attempting Install-Module with CurrentUser scope..."
+            Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery -Scope CurrentUser -ErrorAction Stop | Out-Null
+            Import-Module -Name Microsoft.WinGet.Client -ErrorAction Stop
+            # Repair may still require elevation; try anyway
+            Repair-WinGetPackageManager -AllUsers -ErrorAction Stop
+            Write-Host "Done."
+            Write-Log "[SUCCESS] Winget installed/bootstrapped (CurrentUser)."
+            $installed = $true
+        } catch {
+            Write-Log "[FATAL] Winget installation failed in both AllUsers and CurrentUser attempts: $($_.Exception.Message)"
+            Log-Exception $_
+            exit 1
+        }
+    }
+
+    # Verify winget is available
+    try {
+        & winget --version > $null 2>&1
         Write-Log "[SUCCESS] Winget appears available after bootstrap."
     } catch {
-        Write-Log "[FATAL ERROR] Winget installation verification failed."
+        Write-Log "[FATAL ERROR] Winget installation verification failed: $($_.Exception.Message)"
+        Log-Exception $_
         exit 1
     }
 } else {
