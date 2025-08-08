@@ -49,6 +49,9 @@
 					"PackageIdentifier" : "BrowserOS.BrowserOS"
 				},
 				{
+					"PackageIdentifier" : "notepad++.notepad++"
+				},
+				{
 					"PackageIdentifier" : "SST.opencode"
 				}
 
@@ -63,4 +66,5 @@
 		}
 	],
 	"WinGetVersion" : "1.11.430"
+
 }
