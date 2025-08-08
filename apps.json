@@ -6,55 +6,22 @@
 		{
 			"Packages" : 
 			[
-				{
-					"PackageIdentifier" : "7zip.7zip"
-				},
-				{
-					"PackageIdentifier" : "VideoLAN.VLC"
-				},
-				{
-					"PackageIdentifier" : "wez.wezterm"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.Edge"
-				},
-				{
-					"PackageIdentifier" : "Bitwarden.Bitwarden"
-				},
-				{
-					"PackageIdentifier" : "Brave.Brave"
-				},
-				{
-					"PackageIdentifier" : "Xournal++.Xournal++"
-				},
-				{
-					"PackageIdentifier" : "WinSCP.WinSCP"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VisualStudioCode"
-				},
-				{
-					"PackageIdentifier" : "MoonlightGameStreamingProject.Moonlight"
-				},
-				{
-					"PackageIdentifier" : "Plex.Plexamp"
-				},
-				{
-					"PackageIdentifier" : "MarekJasinski.FreeCommanderXE"
-				},
-				{
-					"PackageIdentifier" : "Anthropic.Claude"
-				},
-				{
-					"PackageIdentifier" : "BrowserOS.BrowserOS"
-				},
-				{
-					"PackageIdentifier" : "notepad++.notepad++"
-				},
-				{
-					"PackageIdentifier" : "SST.opencode"
-				}
-
+				{"PackageIdentifier" : "7zip.7zip"},
+				{"PackageIdentifier" : "VideoLAN.VLC"},
+				{"PackageIdentifier" : "wez.wezterm"},
+				{"PackageIdentifier" : "Microsoft.Edge"},
+				{"PackageIdentifier" : "Bitwarden.Bitwarden"},
+				{"PackageIdentifier" : "Brave.Brave"},
+				{"PackageIdentifier" : "Xournal++.Xournal++"},
+				{"PackageIdentifier" : "WinSCP.WinSCP"},
+				{"PackageIdentifier" : "Microsoft.VisualStudioCode"},
+				{"PackageIdentifier" : "MoonlightGameStreamingProject.Moonlight"},
+				{"PackageIdentifier" : "Plex.Plexamp"},
+				{"PackageIdentifier" : "MarekJasinski.FreeCommanderXE"},
+				{"PackageIdentifier" : "Anthropic.Claude"},
+				{"PackageIdentifier" : "BrowserOS.BrowserOS"},
+				{"PackageIdentifier" : "notepad++.notepad++"},
+				{"PackageIdentifier" : "SST.opencode"}
 			],
 			"SourceDetails" : 
 			{
@@ -68,3 +35,4 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
