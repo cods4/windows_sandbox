@@ -8,12 +8,12 @@
   <MemoryInMB>4096</MemoryInMB>
   <MappedFolders>
     <MappedFolder>
-      <HostFolder>C:\Users\CodlinM\Downloads</HostFolder>
+      <HostFolder>%USERPROFILE%\Downloads</HostFolder>
       <SandboxFolder>C:\temp</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>
     <MappedFolder>
-      <HostFolder>C:\Users\CodlinM\Sandbox\startupscripts</HostFolder>
+      <HostFolder>%USERPROFILE%\Sandbox\startupscripts</HostFolder>
       <SandboxFolder>C:\startupscripts</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>
