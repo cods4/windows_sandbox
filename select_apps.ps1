@@ -125,7 +125,7 @@ function Process-Selection {
         $newJson | ConvertTo-Json -Depth 99 | Out-File -FilePath $outPath -Encoding UTF8
         Write-Host "Selected apps written to $outPath"
     } catch {
-        [System.Windows.Forms.MessageBox]::Show("Failed to write ${outPath}: $($_.Exception.Message)", 'Error',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
+        [System.Windows.Forms.MessageBox]::Show(("Failed to write {0}: {1}" -f $outPath, $_.Exception.Message), 'Error',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
         $form.Close()
         exit 1
     }
