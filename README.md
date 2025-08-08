@@ -25,8 +25,9 @@ These configuration files extend the default Sandbox functionality with the foll
 
 ## How to Use
 
-1.  Clone or download the `sandbox.wsb` file from this repository to your local machine.
-2.  Clone or download the `bootstrap.ps1` file from this repository and place it in %USERPROFILE%\Sandbox\startupscripts.
+1.  Either, download the `sandbox.wsb` file from this repository to your local machine and replace USERNAME with your windows username, Or
+    download sandbox.ps1 and run it in powershell. This will generate a wsb file with your username.
+3.  Clone or download the `bootstrap.ps1` file from this repository and place it in %USERPROFILE%\Sandbox\startupscripts.
 4.  Simply **double-click** the `.wsb` file to launch a new Windows Sandbox session with the specified configuration.
 5.  A log file will be generated in %USERPROFILE%\Sandbox\startupscripts with the output from bootstrap.ps1.
 
