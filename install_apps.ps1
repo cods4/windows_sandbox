@@ -70,11 +70,10 @@ if (-not $wingetPresent) {
 
     $installed = $false
     try {
-        Install-PackageProvider -Name NuGet -Force -ErrorAction Stop | Out-Null
-        Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery -ErrorAction Stop -Scope AllUsers | Out-Null
+        Install-PackageProvider -Name NuGet -Force | Out-Null
+        Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
         Write-Host "Using Repair-WinGetPackageManager cmdlet to bootstrap WinGet..."
-        Import-Module -Name Microsoft.WinGet.Client -ErrorAction Stop
-        Repair-WinGetPackageManager -AllUsers -ErrorAction Stop
+        Repair-WinGetPackageManager -AllUsers
         Write-Host "Done."
         Write-Log "[SUCCESS] Winget installed/bootstrapped (AllUsers)."
         $installed = $true
