@@ -19,8 +19,6 @@
     </MappedFolder>
   </MappedFolders>
   <LogonCommand>
-    <Command><![CDATA[
- powershell -NoProfile -ExecutionPolicy Bypass -Command "& 'C:\\startupscripts\\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\\startupscripts\\startup_run.log' -Append"
-  ]]></Command>
+    <Command>powershell -NoProfile -ExecutionPolicy Bypass -Command "& { & 'C:\startupscripts\bootstrap.ps1' 2>&1 | Tee-Object -FilePath 'C:\startupscripts\startup_run.log' -Append }"</Command>
    </LogonCommand>
 </Configuration>
