@@ -37,7 +37,7 @@ try {
           }
       } catch {
           # If we couldn't read or validated as HTML, abort
-          Write-Log "[ERROR] Failed to validate downloaded file $dst: $($_.Exception.Message)"
+          Write-Log ("[ERROR] Failed to validate downloaded file {0}: {1}" -f $dst, $_.Exception.Message)
           throw
       }
     } catch {
