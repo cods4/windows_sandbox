@@ -2,7 +2,7 @@
 $UserProfile = $env:USERPROFILE
 
 # Define the output file name
-$OutputFile = "My Sandbox.wsb"
+$OutputFile = "sandbox.wsb"
 
 # Define the XML configuration using a placeholder for the user path
 # A here-string (@"..."@) makes it easy to write multi-line text
