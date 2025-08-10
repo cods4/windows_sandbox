@@ -21,6 +21,7 @@
 				{"PackageIdentifier" : "Anthropic.Claude"},
 				{"PackageIdentifier" : "BrowserOS.BrowserOS"},
 				{"PackageIdentifier" : "notepad++.notepad++"},
+				{"PackageIdentifier" : "eloston.ungoogled-chromium"},
 				{"PackageIdentifier" : "SST.opencode"}
 			],
 			"SourceDetails" : 
@@ -35,4 +36,5 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
 
