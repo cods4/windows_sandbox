@@ -23,6 +23,7 @@
 				{"PackageIdentifier" : "notepad++.notepad++"},
 				{"PackageIdentifier" : "eloston.ungoogled-chromium"},
 				{"PackageIdentifier" : "TigerVNCproject.TigerVNC"},
+				{"PackageIdentifier" : "OpenJS.NodeJS"},
 				{"PackageIdentifier" : "SST.opencode"}
 			],
 			"SourceDetails" : 
@@ -37,6 +38,7 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
 
 
 
