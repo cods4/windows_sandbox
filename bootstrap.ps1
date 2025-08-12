@@ -58,7 +58,7 @@ try {
   }
 
 } finally {
-  Write-Log "Cleaning up temporary directory: $tmpDir"
-  try { Remove-Item -Path $tmpDir -Recurse -Force -ErrorAction SilentlyContinue } catch { Write-Log "Warning: failed to remove temp dir: $($_.Exception.Message)" }
+#  Write-Log "Cleaning up temporary directory: $tmpDir"
+#  try { Remove-Item -Path $tmpDir -Recurse -Force -ErrorAction SilentlyContinue } catch { Write-Log "Warning: failed to remove temp dir: $($_.Exception.Message)" }
   Write-Log "=== Bootstrap finished at $(Get-Date) ==="
 }
