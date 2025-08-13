@@ -7,25 +7,24 @@
 			"Packages" : 
 			[
 				{"PackageIdentifier" : "7zip.7zip"},
+				{"PackageIdentifier" : "Git.Git"},
+				{"PackageIdentifier" : "notepad++.notepad++"},
+				{"PackageIdentifier" : "TigerVNC.TigerVNC"},
 				{"PackageIdentifier" : "VideoLAN.VLC"},
 				{"PackageIdentifier" : "wez.wezterm"},
-				{"PackageIdentifier" : "Microsoft.Edge"},
+				{"PackageIdentifier" : "OpenJS.NodeJS"},
+				{"PackageIdentifier" : "MarekJasinski.FreeCommanderXE"},
+				{"PackageIdentifier" : "MoonlightGameStreamingProject.Moonlight"},
 				{"PackageIdentifier" : "Bitwarden.Bitwarden"},
+				{"PackageIdentifier" : "Plex.Plexamp"},
+				{"PackageIdentifier" : "Anthropic.Claude"},
 				{"PackageIdentifier" : "Brave.Brave"},
+				{"PackageIdentifier" : "BrowserOS.BrowserOS"},
+				{"PackageIdentifier" : "eloston.ungoogled-chromium"},
+				{"PackageIdentifier" : "SST.opencode"},
 				{"PackageIdentifier" : "Xournal++.Xournal++"},
 				{"PackageIdentifier" : "WinSCP.WinSCP"},
-				{"PackageIdentifier" : "Microsoft.VisualStudioCode"},
-				{"PackageIdentifier" : "MoonlightGameStreamingProject.Moonlight"},
-				{"PackageIdentifier" : "Plex.Plexamp"},
-				{"PackageIdentifier" : "MarekJasinski.FreeCommanderXE"},
-				{"PackageIdentifier" : "Anthropic.Claude"},
-				{"PackageIdentifier" : "BrowserOS.BrowserOS"},
-				{"PackageIdentifier" : "notepad++.notepad++"},
-				{"PackageIdentifier" : "eloston.ungoogled-chromium"},
-				{"PackageIdentifier" : "TigerVNC.TigerVNC"},
-				{"PackageIdentifier" : "OpenJS.NodeJS"},
-				{"PackageIdentifier" : "Git.Git"},
-				{"PackageIdentifier" : "SST.opencode"}
+				{"PackageIdentifier" : "Microsoft.VisualStudioCode"}
 			],
 			"SourceDetails" : 
 			{
@@ -39,6 +38,7 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
 
 
 
