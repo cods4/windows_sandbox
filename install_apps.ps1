@@ -123,7 +123,7 @@ Write-Log "====================================================="
 
 try {
     # Accept source agreements and install as per the provided JSON
-    winget import -i $AppsJsonPath --accept-source-agreements
+    winget import -i $AppsJsonPath --accept-source-agreements --ignore-unavailable
     if ($LASTEXITCODE -eq 0) {
         Write-Log "[SUCCESS] All applications installed successfully."
     } else {

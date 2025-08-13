@@ -72,7 +72,7 @@ function Process-Selection {
         for ($i = 0; $i -lt $checkedList.Items.Count; $i++) {
             $checkedList.SetItemChecked($i, $true)
         }
-        [System.Windows.Forms.MessageBox]::Show('No selection made within the timeout. Selecting all applications and proceeding.','Info',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Information) | Out-Null
+
     }
 
     # Build the list of selected IDs in the same order as displayed
