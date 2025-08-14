@@ -60,5 +60,30 @@ try {
 } finally {
 #  Write-Log "Cleaning up temporary directory: $tmpDir"
 #  try { Remove-Item -Path $tmpDir -Recurse -Force -ErrorAction SilentlyContinue } catch { Write-Log "Warning: failed to remove temp dir: $($_.Exception.Message)" }
+
+  # --- Tailscale Configuration ---
+  $tailscalePath = "C:\Program Files\Tailscale\tailscale.exe"
+  if (Test-Path $tailscalePath) {
+      Write-Log "[INFO] Tailscale detected. Prompting for authentication key..."
+      $authKey = Read-Host -Prompt "Please enter your Tailscale authentication key"
+      if (-not [string]::IsNullOrEmpty($authKey)) {
+          Write-Log "[INFO] Running Tailscale setup..."
+          try {
+              Set-Location -Path "C:\Program Files\Tailscale"
+              & .\tailscale.exe up --auth-key=$authKey
+              Write-Log "[SUCCESS] Tailscale setup complete."
+          } catch {
+              Write-Log "[ERROR] Failed to run Tailscale command: $($_.Exception.Message)"
+          } finally {
+              # Change back to the original directory if needed, or just let the script exit
+              Set-Location -Path $tmpDir
+          }
+      } else {
+          Write-Log "[WARN] Tailscale authentication key not provided. Skipping Tailscale setup."
+      }
+  } else {
+      Write-Log "[INFO] Tailscale not found. Skipping Tailscale configuration."
+  }
+
   Write-Log "=== Bootstrap finished at $(Get-Date) ==="
 }
