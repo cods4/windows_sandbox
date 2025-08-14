@@ -93,13 +93,6 @@ try {
               Write-Log "[ERROR] Failed to read Tailscale key from $tailscaleKeyFilePath: $($_.Exception.Message)"
           } finally {
               # Do not remove the key file as per user request
-              # Write-Log "[INFO] Attempting to remove Tailscale key file: $tailscaleKeyFilePath"
-              # try {
-              #     Remove-Item -Path $tailscaleKeyFilePath -Force -ErrorAction SilentlyContinue
-              #     Write-Log "[INFO] Tailscale key file removed."
-              # } catch {
-              #     Write-Log "[WARN] Failed to remove Tailscale key file: $($_.Exception.Message)"
-              # }
           }
       } else {
           Write-Log "[WARN] Tailscale key file not found at $tailscaleKeyFilePath. Skipping Tailscale setup."
