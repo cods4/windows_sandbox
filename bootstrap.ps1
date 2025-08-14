@@ -90,7 +90,7 @@ try {
                   Write-Log "[WARN] Tailscale authentication key file was empty. Skipping Tailscale setup."
               }
           } catch {
-              Write-Log "[ERROR] Failed to read Tailscale key from $tailscaleKeyFilePath: ${_.Exception.Message}"
+              Write-Log ('[ERROR] Failed to read Tailscale key from {0}: {1}' -f $tailscaleKeyFilePath, $_.Exception.Message)
           } finally {
               # Do not remove the key file as per user request
           }
