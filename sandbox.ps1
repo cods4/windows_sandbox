@@ -58,6 +58,22 @@ $WsbTemplate = @"
 # Replace the placeholder with the actual user profile path
 $WsbContent = $WsbTemplate.Replace('__USERPROFILE__', $UserProfile)
 
+# Ensure startupscripts host folder exists
+if (-not (Test-Path $startupscriptsHostPath)) {
+    New-Item -ItemType Directory -Path $startupscriptsHostPath -Force | Out-Null
+}
+
+# Pull latest bootstrap.ps1 into the host startupscripts folder so it is mapped into the sandbox
+$bootstrapUrl = 'https://raw.githubusercontent.com/cods4/windows_sandbox/main/bootstrap.ps1'
+$bootstrapDest = Join-Path $startupscriptsHostPath 'bootstrap.ps1'
+try {
+    Write-Host "Downloading latest bootstrap.ps1 to $bootstrapDest"
+    Invoke-WebRequest -Uri $bootstrapUrl -OutFile $bootstrapDest -UseBasicParsing -ErrorAction Stop
+    Write-Host "Updated bootstrap.ps1 in startupscripts folder."
+} catch {
+    Write-Host "[WARN] Failed to download bootstrap.ps1: $($_.Exception.Message)"
+}
+
 # Save the final content to the .wsb file
 Set-Content -Path $OutputFile -Value $WsbContent
 
