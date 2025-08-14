@@ -62,28 +62,53 @@ try {
 #  try { Remove-Item -Path $tmpDir -Recurse -Force -ErrorAction SilentlyContinue } catch { Write-Log "Warning: failed to remove temp dir: $($_.Exception.Message)" }
 
   # --- Tailscale Configuration ---
+  Write-Log "[DEBUG] Checking for Tailscale installation..."
   $tailscalePath = "C:\Program Files\Tailscale\tailscale.exe"
+  $tailscaleKeyFilePath = "C:\startupscripts\tailscale_key.txt"
+
   if (Test-Path $tailscalePath) {
-      Write-Log "[INFO] Tailscale detected. Prompting for authentication key..."
-      $authKey = Read-Host -Prompt "Please enter your Tailscale authentication key"
-      if (-not [string]::IsNullOrEmpty($authKey)) {
-          Write-Log "[INFO] Running Tailscale setup..."
+      Write-Log "[INFO] Tailscale detected at $tailscalePath."
+      if (Test-Path $tailscaleKeyFilePath) {
+          Write-Log "[INFO] Reading Tailscale authentication key from $tailscaleKeyFilePath..."
           try {
-              Set-Location -Path "C:\Program Files\Tailscale"
-              & .\tailscale.exe up --auth-key=$authKey
-              Write-Log "[SUCCESS] Tailscale setup complete."
+              $authKey = Get-Content -Path $tailscaleKeyFilePath | Out-String | Select-Object -First 1
+              $authKey = $authKey.Trim()
+              Write-Log "[DEBUG] Read key (first 5 chars): $($authKey.Substring(0, [System.Math]::Min(5, $authKey.Length)))..."
+
+              if (-not [string]::IsNullOrEmpty($authKey)) {
+                  Write-Log "[INFO] Authentication key found. Running Tailscale setup..."
+                  try {
+                      Set-Location -Path "C:\Program Files\Tailscale"
+                      & .\tailscale.exe up --auth-key=$authKey
+                      Write-Log "[SUCCESS] Tailscale setup complete."
+                  } catch {
+                      Write-Log "[ERROR] Failed to run Tailscale command: $($_.Exception.Message)"
+                  } finally {
+                      Set-Location -Path $tmpDir # Ensure we return to the temp directory
+                  }
+              } else {
+                  Write-Log "[WARN] Tailscale authentication key file was empty. Skipping Tailscale setup."
+              }
           } catch {
-              Write-Log "[ERROR] Failed to run Tailscale command: $($_.Exception.Message)"
+              Write-Log "[ERROR] Failed to read Tailscale key from $tailscaleKeyFilePath: $($_.Exception.Message)"
           } finally {
-              # Change back to the original directory if needed, or just let the script exit
-              Set-Location -Path $tmpDir
+              # Do not remove the key file as per user request
+              # Write-Log "[INFO] Attempting to remove Tailscale key file: $tailscaleKeyFilePath"
+              # try {
+              #     Remove-Item -Path $tailscaleKeyFilePath -Force -ErrorAction SilentlyContinue
+              #     Write-Log "[INFO] Tailscale key file removed."
+              # } catch {
+              #     Write-Log "[WARN] Failed to remove Tailscale key file: $($_.Exception.Message)"
+              # }
           }
       } else {
-          Write-Log "[WARN] Tailscale authentication key not provided. Skipping Tailscale setup."
+          Write-Log "[WARN] Tailscale key file not found at $tailscaleKeyFilePath. Skipping Tailscale setup."
       }
   } else {
-      Write-Log "[INFO] Tailscale not found. Skipping Tailscale configuration."
+      Write-Log "[INFO] Tailscale not found at $tailscalePath. Skipping Tailscale configuration."
   }
+
+
 
   Write-Log "=== Bootstrap finished at $(Get-Date) ==="
 }
