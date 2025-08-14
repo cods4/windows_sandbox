@@ -25,6 +25,7 @@
 				{"PackageIdentifier" : "Xournal++.Xournal++"},
 				{"PackageIdentifier" : "WinSCP.WinSCP"},
 				{"PackageIdentifier" : "tailscale.tailscale"},
+				{"PackageIdentifier" : "Inkscape.Inkscape"},
 				{"PackageIdentifier" : "Microsoft.VisualStudioCode"}
 			],
 			"SourceDetails" : 
@@ -39,6 +40,7 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
 
 
 
