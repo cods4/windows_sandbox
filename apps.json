@@ -26,6 +26,7 @@
 				{"PackageIdentifier" : "WinSCP.WinSCP"},
 				{"PackageIdentifier" : "tailscale.tailscale"},
 				{"PackageIdentifier" : "Inkscape.Inkscape"},
+				{"PackageIdentifier" : "Python.Python.3.13"},
 				{"PackageIdentifier" : "Microsoft.VisualStudioCode"}
 			],
 			"SourceDetails" : 
@@ -40,6 +41,7 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
 
 
 
