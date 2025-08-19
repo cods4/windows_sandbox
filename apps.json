@@ -27,6 +27,7 @@
 				{"PackageIdentifier" : "tailscale.tailscale"},
 				{"PackageIdentifier" : "Inkscape.Inkscape"},
 				{"PackageIdentifier" : "Python.Python.3.13"},
+				{"PackageIdentifier" : "Microsoft.Office"},
 				{"PackageIdentifier" : "Microsoft.VisualStudioCode"}
 			],
 			"SourceDetails" : 
@@ -41,6 +42,7 @@
 	"WinGetVersion" : "1.11.430"
 
 }
+
 
 
 
