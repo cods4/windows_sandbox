@@ -19,6 +19,7 @@
 				{"PackageIdentifier" : "Plex.Plexamp"},
 				{"PackageIdentifier" : "Anthropic.Claude"},
 				{"PackageIdentifier" : "Brave.Brave"},
+				{"PackageIdentifier" : "Mozilla.Firefox"},
 				{"PackageIdentifier" : "BrowserOS.BrowserOS"},
 				{"PackageIdentifier" : "eloston.ungoogled-chromium"},
 				{"PackageIdentifier" : "SST.opencode"},
